@@ -30,7 +30,34 @@ function (dojo, declare) {
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
-
+            this.TERRAIN_TILE_CORNER_OFFSET = {
+                0: "-1,1",
+                90: "-1,1",
+                180: "1,-1",
+                270: "-1,-1"
+            };
+            this.LAND_TILE_TERRITORY_OFFSETS = {
+                0: {
+                    "left": "0,0",
+                    "right": "2,0",
+                    "enchantedland": "1,1"
+                },
+                90: {
+                    "left": "0,0",
+                    "right": "0,-2",
+                    "enchantedland": "1,-1"
+                },
+                180: {
+                    "left": "0,0",
+                    "right": "-2,0",
+                    "enchantedland": "-1,-1"
+                },
+                270: {
+                    "left": "0,0",
+                    "right": "0,2",
+                    "enchantedland": "-1,1"
+                }
+            };
         },
         
         /*
@@ -59,123 +86,85 @@ function (dojo, declare) {
             this.scrollmap.zoom = 0.8;
             this.scrollmap.createCompletely( $('map_container') );
 
-            const CITY_TILE_OFFSET = "-1,1";
-            const TERRAIN_TILE_CORNER_OFFSET = {
-                "0": "-1,1",
-                "90": "-1,1",
-                "180": "1,-1",
-                "270": "-1,-1"
-            }
-
-            let game_map = {
+            const tile_map = {
                 "1,-1": {
-                    "location": "terrain_bog",
-                    "rotation": 0
+                    "type": "land",
+                    "rotation": 0,
+                    "id": 14
                 },
                 "-1,-1": {
-                    "location": "terrain_hill",
-                    "rotation": 180
+                    "type": "land",
+                    "rotation": 180,
+                    "id": 1
                 },
                 "1,1": {
-                    "location": "terrain_forest",
-                    "rotation": 0
+                    "type": "land",
+                    "rotation": 0,
+                    "id": 2
                 },
                 "5,-1": {
-                    "location": "terrain_bog",
-                    "rotation": 270
+                    "type": "land",
+                    "rotation": 270,
+                    "id": 3
                 },
                 "3,-5": {
-                    "location": "terrain_forest",
-                    "rotation": 270
+                    "type": "land",
+                    "rotation": 270,
+                    "id": 4
                 },
                 "-1,-3": {
-                    "location": "terrain_forest",
-                    "rotation": 0
+                    "type": "land",
+                    "rotation": 0,
+                    "id": 5
                 },
                 "-1,1": {
-                    "location": "terrain_forest",
-                    "rotation": 180
+                    "type": "land",
+                    "rotation": 180,
+                    "id": 6
                 },
                 "0,0": {
-                    "location": "city_0"
+                    "type": "city",
+                    "id": 7
                 },
                 "-2,2": {
-                    "location": "city_1"
+                    "type": "city",
+                    "id": 8
                 },
                 "-4,0": {
-                    "location": "city_2"
+                    "type": "city",
+                    "id": 9
                 },
                 "4,2": {
-                    "location": "city_3"
+                    "type": "city",
+                    "id": 10
                 },
                 "2,-2": {
-                    "location": "city_4"
+                    "type": "city",
+                    "id": 11
                 },
                 "4,-2": {
-                    "location": "city_5"
+                    "type": "city",
+                    "id": 12
                 },
                 "0,-4": {
-                    "location": "city_6"
+                    "type": "city",
+                    "id": 13
                 },
             }
 
-            // iterate through game map and place each tile on board
-            for (const [key, value] of Object.entries(game_map)) {
-                console.log(`territory coords: ${key}`)
-                const X = parseInt(key.split(",")[0]);
-                const Y = parseInt(key.split(",")[1]);
-                const territory = value["location"].split("_")[0];
-                const terrain_type = value["location"].split("_")[1];
-                console.log(`terrain: ${territory}`);
-                console.log(`type: ${terrain_type}`);
-                console.log(`x-coord: ${X}`);
-                console.log(`y-coord: ${Y}`);
+            Object.entries(tile_map).forEach(([coordinates, tile]) => {
+                const [ X, Y ] = this.getCoordinatesFromString(coordinates);
+                const TILE_TYPE = tile["type"];
+                const TILE_ROTATION = tile["rotation"];
+                const TILE_ID = tile["id"];
 
-                if (territory === "terrain") {
-                    const ROTATION_DEGREES = value["rotation"];
-                    const X_OFFSET = parseInt(TERRAIN_TILE_CORNER_OFFSET[ROTATION_DEGREES].split(',')[0]);
-                    const Y_OFFSET = parseInt(TERRAIN_TILE_CORNER_OFFSET[ROTATION_DEGREES].split(',')[1]);
-                    console.log(`rotation deg: ${ROTATION_DEGREES}`);
-                    console.log(`x offset: ${X_OFFSET}`);
-                    console.log(`y offset: ${Y_OFFSET}`);
-
-                    const DISPLAY_X = X + X_OFFSET;
-                    const DISPLAY_Y = Y + Y_OFFSET;
-                    console.log(`display x: ${DISPLAY_X}`);
-                    console.log(`display y: ${DISPLAY_Y}`);
-
-                    document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
-                        <div id="tile_${key}" class="tile_container">
-                            <div class="tile"></div>
-                            <div class="terrain left-terrain"></div>
-                            <div class="terrain right-terrain"></div>
-                            <div class="terrain-circle"></div>
-                        </div>
-                    `);
-
-                    let tile = document.getElementById(`tile_${key}`);
-                    tile.style.transform = `rotate(${ROTATION_DEGREES}deg)`;
-                    tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100}px`;
-                    tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100}px`;
+                if (TILE_TYPE === "land") {
+                    this.placeLandTile(X, Y, TILE_ROTATION, TILE_ID);
                 }
-                if (territory === "city") {
-                    console.log(`its city number: ${terrain_type}`);
-
-                    const DISPLAY_X = X;
-                    const DISPLAY_Y = Y;
-
-                    document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
-                        <div id="city_${terrain_type}" class="city_container">
-                            <div class="city_image"></div>
-                            <div class="city-circle"></div>
-                        </div>
-                    `);
-
-                    let tile = document.getElementById(`city_${terrain_type}`);
-                    tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100 - 28}px`;
-                    tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100 - 28}px`;
+                if (TILE_TYPE === "city") {
+                    this.placeCityTile(X, Y, TILE_ID);
                 }
-            }
+            });
 
             // Example to add a div on the game area
             document.getElementById('game_play_area').insertAdjacentHTML('beforeend', `
@@ -286,7 +275,7 @@ function (dojo, declare) {
                     break;
                 }
             }
-        },        
+        },
 
         ///////////////////////////////////////////////////
         //// Utility methods
@@ -298,6 +287,70 @@ function (dojo, declare) {
         
         */
 
+        placeLandTile: function (x, y, rotation_degrees, tile_id) {
+            const [ X_OFFSET, Y_OFFSET ] = this.getCoordinatesFromString(this.TERRAIN_TILE_CORNER_OFFSET[rotation_degrees]);
+            console.log(`rotation deg: ${rotation_degrees}`);
+            console.log(`x offset: ${X_OFFSET}`);
+            console.log(`y offset: ${Y_OFFSET}`);
+
+            const DISPLAY_X = x + X_OFFSET;
+            const DISPLAY_Y = y + Y_OFFSET;
+            console.log(`display x: ${DISPLAY_X}`);
+            console.log(`display y: ${DISPLAY_Y}`);
+
+            const TERRITORY_OFFSET = this.LAND_TILE_TERRITORY_OFFSETS[rotation_degrees];
+            const LEFT_TERRITORY_ID = this.constructTerritoryName(x, y, TERRITORY_OFFSET['left']);
+            const RIGHT_TERRITORY_ID = this.constructTerritoryName(x, y, TERRITORY_OFFSET['right']);
+            const ENCHANTEDLAND_TERRITORY_ID = this.constructTerritoryName(x, y, TERRITORY_OFFSET['enchantedland']);
+
+            document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
+                <div id="${tile_id}" class="tile_container">
+                    <div class="tile"></div>
+                    <div id="${LEFT_TERRITORY_ID}" class="terrain left-terrain"></div>
+                    <div id="${RIGHT_TERRITORY_ID}" class="terrain right-terrain"></div>
+                    <div id="${ENCHANTEDLAND_TERRITORY_ID}" class="terrain-circle"></div>
+                </div>
+            `);
+
+            let tile = document.getElementById(tile_id);
+            tile.style.transform = `rotate(${rotation_degrees}deg)`;
+            tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100}px`;
+            tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100}px`;
+        },
+
+        placeCityTile: function (x, y, tile_id) {
+            const TERRITORY_ID = `territory_${x}_${y}`;
+            console.log(`place territory id: ${TERRITORY_ID}`);
+
+            const DISPLAY_X = x;
+            const DISPLAY_Y = y;
+
+            document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
+                <div id="${tile_id}" class="city_container">
+                    <div class="city_image"></div>
+                    <div id="${TERRITORY_ID}" class="city-circle"></div>
+                </div>
+            `);
+
+            let tile = document.getElementById(tile_id);
+            tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100 - 28}px`;
+            tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100 - 28}px`;
+        },
+
+        constructTerritoryName: function (x, y, offset) {
+            const COORDINATE = this.getCoordinatesFromString(offset);
+            const X_OFFSET = COORDINATE[0];
+            const Y_OFFSET = COORDINATE[1];
+
+            return `territory_${x + X_OFFSET}_${y + Y_OFFSET}`;
+        },
+
+        getCoordinatesFromString: function (coordinates_string) {
+            const X = parseInt(coordinates_string.split(',')[0]);
+            const Y = parseInt(coordinates_string.split(',')[1]);
+
+            return [ X, Y ];
+        },
 
         ///////////////////////////////////////////////////
         //// Player's action
