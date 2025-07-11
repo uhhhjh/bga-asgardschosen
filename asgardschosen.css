@@ -67,6 +67,90 @@
     }
 */
 
+#map_container {
+  position: relative;
+  width: 100%;
+  height: 600px;
+}
 
+.tile {
+    position: absolute;
+    top: -28px;
+    width: 200px;
+    aspect-ratio: 100 / 64;
+    background-image: url('img/tile-0.png');
+    background-size: cover;
+    pointer-events: inherit;
+}
 
+.tile_container {
+    position: absolute;
+    overflow: visible;
+    height: 100px;
+    width: 200px;
+    transform: rotate(0deg);
+    transform-origin: top left;
+    pointer-events: none;
+}
 
+.terrain {
+    position: absolute;
+    height: 100px;
+    width: 100px;
+    clip-path: path("M 0 28 A 28 28, 0 0 0, 28 0 l 44 0 A 28 28, 0 0 0, 100 28 l 0 44 A 28 28, 0 0 0, 72 100 l -44 0 A 28 28, 0 0 0, 0 72 l 0 -44");
+    background-color: transparent;
+    cursor: pointer;
+    pointer-events: visiblePainted;
+}
+
+.left-terrain {
+    bottom: 0px;
+    left: 0px;
+}
+
+.right-terrain {
+    bottom: 0px;
+    left: 100px;
+}
+
+.terrain-circle {
+    position: absolute;
+    top: -28px;
+    left: 72px;
+    height: 56px;
+    width: 56px;
+    background-color: transparent;
+    clip-path: circle(28px);
+    cursor: pointer;
+    pointer-events: visiblePainted;
+}
+
+.city_container {
+    position: absolute;
+    top: calc(-28px);
+    left: calc(-28px);
+    height: 56px;
+    width: 56px;
+    pointer-events: none;
+}
+
+.city_image {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 56px;
+    width: 56px;
+    background-image: url('img/tile-city-0.png');
+    background-size: cover;
+    pointer-events: inherit;
+}
+
+.city-circle {
+    position: absolute;
+    height: 56px;
+    width: 56px;
+    background-color: transparent;
+    clip-path: circle(28px);
+    cursor: pointer;
+    pointer-events: visiblePainted;
+}

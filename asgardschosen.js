@@ -18,7 +18,9 @@
 define([
     "dojo","dojo/_base/declare",
     "ebg/core/gamegui",
-    "ebg/counter"
+    "ebg/counter",
+    "ebg/expandablesection",
+    "./modules/js/scrollmapWithZoom"
 ],
 function (dojo, declare) {
     return declare("bgagame.asgardschosen", ebg.core.gamegui, {
@@ -47,6 +49,133 @@ function (dojo, declare) {
         setup: function( gamedatas )
         {
             console.log( "Starting game setup" );
+
+            this.getGameAreaElement().insertAdjacentHTML('beforeend', `
+                <div id="map_container" class="scrollmap_container">
+                </div>
+            `);
+
+            this.scrollmap = new ebg.scrollmapWithZoom();
+            this.scrollmap.zoom = 0.8;
+            this.scrollmap.createCompletely( $('map_container') );
+
+            const CITY_TILE_OFFSET = "-1,1";
+            const TERRAIN_TILE_CORNER_OFFSET = {
+                "0": "-1,1",
+                "90": "-1,1",
+                "180": "1,-1",
+                "270": "-1,-1"
+            }
+
+            let game_map = {
+                "1,-1": {
+                    "location": "terrain_bog",
+                    "rotation": 0
+                },
+                "-1,-1": {
+                    "location": "terrain_hill",
+                    "rotation": 180
+                },
+                "1,1": {
+                    "location": "terrain_forest",
+                    "rotation": 0
+                },
+                "5,-1": {
+                    "location": "terrain_bog",
+                    "rotation": 270
+                },
+                "3,-5": {
+                    "location": "terrain_forest",
+                    "rotation": 270
+                },
+                "-1,-3": {
+                    "location": "terrain_forest",
+                    "rotation": 0
+                },
+                "-1,1": {
+                    "location": "terrain_forest",
+                    "rotation": 180
+                },
+                "0,0": {
+                    "location": "city_0"
+                },
+                "-2,2": {
+                    "location": "city_1"
+                },
+                "-4,0": {
+                    "location": "city_2"
+                },
+                "4,2": {
+                    "location": "city_3"
+                },
+                "2,-2": {
+                    "location": "city_4"
+                },
+                "4,-2": {
+                    "location": "city_5"
+                },
+                "0,-4": {
+                    "location": "city_6"
+                },
+            }
+
+            // iterate through game map and place each tile on board
+            for (const [key, value] of Object.entries(game_map)) {
+                console.log(`territory coords: ${key}`)
+                const X = parseInt(key.split(",")[0]);
+                const Y = parseInt(key.split(",")[1]);
+                const territory = value["location"].split("_")[0];
+                const terrain_type = value["location"].split("_")[1];
+                console.log(`terrain: ${territory}`);
+                console.log(`type: ${terrain_type}`);
+                console.log(`x-coord: ${X}`);
+                console.log(`y-coord: ${Y}`);
+
+                if (territory === "terrain") {
+                    const ROTATION_DEGREES = value["rotation"];
+                    const X_OFFSET = parseInt(TERRAIN_TILE_CORNER_OFFSET[ROTATION_DEGREES].split(',')[0]);
+                    const Y_OFFSET = parseInt(TERRAIN_TILE_CORNER_OFFSET[ROTATION_DEGREES].split(',')[1]);
+                    console.log(`rotation deg: ${ROTATION_DEGREES}`);
+                    console.log(`x offset: ${X_OFFSET}`);
+                    console.log(`y offset: ${Y_OFFSET}`);
+
+                    const DISPLAY_X = X + X_OFFSET;
+                    const DISPLAY_Y = Y + Y_OFFSET;
+                    console.log(`display x: ${DISPLAY_X}`);
+                    console.log(`display y: ${DISPLAY_Y}`);
+
+                    document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
+                        <div id="tile_${key}" class="tile_container">
+                            <div class="tile"></div>
+                            <div class="terrain left-terrain"></div>
+                            <div class="terrain right-terrain"></div>
+                            <div class="terrain-circle"></div>
+                        </div>
+                    `);
+
+                    let tile = document.getElementById(`tile_${key}`);
+                    tile.style.transform = `rotate(${ROTATION_DEGREES}deg)`;
+                    tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100}px`;
+                    tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100}px`;
+                }
+                if (territory === "city") {
+                    console.log(`its city number: ${terrain_type}`);
+
+                    const DISPLAY_X = X;
+                    const DISPLAY_Y = Y;
+
+                    document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
+                        <div id="city_${terrain_type}" class="city_container">
+                            <div class="city_image"></div>
+                            <div class="city-circle"></div>
+                        </div>
+                    `);
+
+                    let tile = document.getElementById(`city_${terrain_type}`);
+                    tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100 - 28}px`;
+                    tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100 - 28}px`;
+                }
+            }
 
             // Example to add a div on the game area
             document.getElementById('game_play_area').insertAdjacentHTML('beforeend', `
