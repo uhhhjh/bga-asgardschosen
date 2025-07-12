@@ -81,7 +81,7 @@
   height: 600px;
 }
 
-.tile-background {
+.tile-land-background {
     position: absolute;
     top: calc(-1 * var(--circle-radius));
     width: var(--land-tile-width);
@@ -91,7 +91,7 @@
     pointer-events: inherit;
 }
 
-.tile_container {
+.tile-land-container {
     position: absolute;
     overflow: visible;
     width: calc(2 * var(--terrain-width));
@@ -101,7 +101,7 @@
     pointer-events: none;
 }
 
-.terrain {
+.terrain-hitbox {
     position: absolute;
     height: var(--terrain-width);
     width: var(--terrain-width);
@@ -121,7 +121,7 @@
     left: var(--terrain-width);
 }
 
-.terrain-circle {
+.enchanted-circle {
     position: absolute;
     top: calc(-1 * var(--circle-radius));
     left: calc(var(--terrain-width) - var(--circle-radius));
@@ -133,7 +133,7 @@
     pointer-events: visiblePainted;
 }
 
-.city_container {
+.tile-city-container {
     position: absolute;
     top: calc(-1 * var(--circle-radius));
     left: calc(-1 * var(--circle-radius));
@@ -142,7 +142,7 @@
     pointer-events: none;
 }
 
-.city_image {
+.tile-city-background {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -153,7 +153,7 @@
     pointer-events: inherit;
 }
 
-.city-circle {
+.city-hitbox {
     position: absolute;
     height: var(--circle-diameter);
     width: var(--circle-diameter);

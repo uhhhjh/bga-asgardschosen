@@ -312,11 +312,11 @@ function (dojo, declare) {
             const ENCHANTEDLAND_TERRITORY_ID = this.constructTerritoryName(x, y, TERRITORY_OFFSET['enchantedland']);
 
             document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
-                <div id="${tile_id}" class="tile_container">
-                    <div id="${tile_id}-image" class="tile-background"></div>
-                    <div id="${LEFT_TERRITORY_ID}" class="terrain left-terrain"></div>
-                    <div id="${RIGHT_TERRITORY_ID}" class="terrain right-terrain"></div>
-                    <div id="${ENCHANTEDLAND_TERRITORY_ID}" class="terrain-circle"></div>
+                <div id="${tile_id}" class="tile-land-container">
+                    <div id="${tile_id}-image" class="tile-land-background"></div>
+                    <div id="${LEFT_TERRITORY_ID}" class="terrain-hitbox left-terrain"></div>
+                    <div id="${RIGHT_TERRITORY_ID}" class="terrain-hitbox right-terrain"></div>
+                    <div id="${ENCHANTEDLAND_TERRITORY_ID}" class="enchanted-circle"></div>
                 </div>
             `);
 
@@ -338,9 +338,9 @@ function (dojo, declare) {
             const DISPLAY_Y = y;
 
             document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
-                <div id="${tile_id}" class="city_container">
-                    <div class="city_image"></div>
-                    <div id="${TERRITORY_ID}" class="city-circle"></div>
+                <div id="${tile_id}" class="tile-city-container">
+                    <div class="tile-city-background"></div>
+                    <div id="${TERRITORY_ID}" class="city-hitbox"></div>
                 </div>
             `);
 
