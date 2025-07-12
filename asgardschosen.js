@@ -100,37 +100,37 @@ function (dojo, declare) {
                 "1,-1": {
                     "type": "land",
                     "rotation": 0,
-                    "id": "landtile_7"
+                    "id": "landtile_0"
                 },
                 "-1,-1": {
                     "type": "land",
                     "rotation": 180,
-                    "id": "landtile_1"
+                    "id": "landtile_10"
                 },
                 "1,1": {
                     "type": "land",
                     "rotation": 0,
-                    "id": "landtile_2"
+                    "id": "landtile_1"
                 },
                 "5,-1": {
                     "type": "land",
                     "rotation": 270,
-                    "id": "landtile_3"
+                    "id": "landtile_11"
                 },
                 "3,-5": {
                     "type": "land",
                     "rotation": 270,
-                    "id": "landtile_4"
+                    "id": "landtile_8"
                 },
                 "-1,-3": {
                     "type": "land",
                     "rotation": 0,
-                    "id": "landtile_5"
+                    "id": "landtile_9"
                 },
                 "-1,1": {
                     "type": "land",
                     "rotation": 180,
-                    "id": "landtile_6"
+                    "id": "landtile_3"
                 },
                 "0,0": {
                     "type": "city",
