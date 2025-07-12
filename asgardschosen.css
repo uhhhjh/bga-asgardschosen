@@ -78,8 +78,17 @@
     top: -28px;
     width: 200px;
     aspect-ratio: 100 / 64;
-    background-image: url('img/tile-0.png');
+    background-image: url('img/tile-land-0.png');
     background-size: cover;
+    pointer-events: inherit;
+}
+
+.tile-background {
+    position: absolute;
+    height: 256px;
+    width: 400px;
+    background-position: 0px 0px;
+    background-image: url('img/tiles-land.png');
     pointer-events: inherit;
 }
 

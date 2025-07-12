@@ -90,37 +90,37 @@ function (dojo, declare) {
                 "1,-1": {
                     "type": "land",
                     "rotation": 0,
-                    "id": 14
+                    "id": "landtile_7"
                 },
                 "-1,-1": {
                     "type": "land",
                     "rotation": 180,
-                    "id": 1
+                    "id": "landtile_1"
                 },
                 "1,1": {
                     "type": "land",
                     "rotation": 0,
-                    "id": 2
+                    "id": "landtile_2"
                 },
                 "5,-1": {
                     "type": "land",
                     "rotation": 270,
-                    "id": 3
+                    "id": "landtile_3"
                 },
                 "3,-5": {
                     "type": "land",
                     "rotation": 270,
-                    "id": 4
+                    "id": "landtile_4"
                 },
                 "-1,-3": {
                     "type": "land",
                     "rotation": 0,
-                    "id": 5
+                    "id": "landtile_5"
                 },
                 "-1,1": {
                     "type": "land",
                     "rotation": 180,
-                    "id": 6
+                    "id": "landtile_6"
                 },
                 "0,0": {
                     "type": "city",
@@ -305,12 +305,17 @@ function (dojo, declare) {
 
             document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
                 <div id="${tile_id}" class="tile_container">
-                    <div class="tile"></div>
+                    <div id="${tile_id}-image" class="tile-background"></div>
                     <div id="${LEFT_TERRITORY_ID}" class="terrain left-terrain"></div>
                     <div id="${RIGHT_TERRITORY_ID}" class="terrain right-terrain"></div>
                     <div id="${ENCHANTEDLAND_TERRITORY_ID}" class="terrain-circle"></div>
                 </div>
             `);
+
+            let tile_image = document.getElementById(`${tile_id}-image`);
+            const [ BACKGROUNDPOSITION_X, BACKGROUNDPOSITION_Y ] = this.getLandTileBackgroundPosition(tile_id);
+            tile_image.style.backgroundPositionX = `${BACKGROUNDPOSITION_X}px`;
+            tile_image.style.backgroundPositionY = `${BACKGROUNDPOSITION_Y}px`;
 
             let tile = document.getElementById(tile_id);
             tile.style.transform = `rotate(${rotation_degrees}deg)`;
@@ -348,6 +353,14 @@ function (dojo, declare) {
         getCoordinatesFromString: function (coordinates_string) {
             const X = parseInt(coordinates_string.split(',')[0]);
             const Y = parseInt(coordinates_string.split(',')[1]);
+
+            return [ X, Y ];
+        },
+
+        getLandTileBackgroundPosition: function (tile_id) {
+            const ID_NUMBER = parseInt(tile_id.split('_')[1]);
+            const X = -1 * (400 * (ID_NUMBER % 4));
+            const Y = -1 * (256 * Math.floor(ID_NUMBER / 4) + Math.floor(ID_NUMBER / 4));
 
             return [ X, Y ];
         },
