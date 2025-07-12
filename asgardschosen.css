@@ -67,26 +67,25 @@
     }
 */
 
+:root {
+  --terrain-width: 200px;
+  --circle-radius: calc(.28 * var(--terrain-width));
+  --circle-diameter: calc(2 * var(--circle-radius));
+  --land-tile-width: calc(2 * var(--terrain-width));
+  --land-tile-height: calc(var(--circle-radius) + var(--terrain-width));
+}
+
 #map_container {
   position: relative;
   width: 100%;
   height: 600px;
 }
 
-.tile {
-    position: absolute;
-    top: -28px;
-    width: 200px;
-    aspect-ratio: 100 / 64;
-    background-image: url('img/tile-land-0.png');
-    background-size: cover;
-    pointer-events: inherit;
-}
-
 .tile-background {
     position: absolute;
-    height: 256px;
-    width: 400px;
+    top: calc(-1 * var(--circle-radius));
+    width: var(--land-tile-width);
+    height: var(--land-tile-height);
     background-position: 0px 0px;
     background-image: url('img/tiles-land.png');
     pointer-events: inherit;
@@ -95,8 +94,8 @@
 .tile_container {
     position: absolute;
     overflow: visible;
-    height: 100px;
-    width: 200px;
+    width: calc(2 * var(--terrain-width));
+    height: var(--terrain-width);
     transform: rotate(0deg);
     transform-origin: top left;
     pointer-events: none;
@@ -104,9 +103,9 @@
 
 .terrain {
     position: absolute;
-    height: 100px;
-    width: 100px;
-    clip-path: path("M 0 28 A 28 28, 0 0 0, 28 0 l 44 0 A 28 28, 0 0 0, 100 28 l 0 44 A 28 28, 0 0 0, 72 100 l -44 0 A 28 28, 0 0 0, 0 72 l 0 -44");
+    height: var(--terrain-width);
+    width: var(--terrain-width);
+    clip-path: path("M 0 56 A 56 56, 0 0 0, 56 0 l 88 0 A 56 56, 0 0 0, 200 56 l 0 88 A 56 56, 0 0 0, 144 200 l -88 0 A 56 56, 0 0 0, 0 144 l 0 -88");
     background-color: transparent;
     cursor: pointer;
     pointer-events: visiblePainted;
@@ -119,27 +118,27 @@
 
 .right-terrain {
     bottom: 0px;
-    left: 100px;
+    left: var(--terrain-width);
 }
 
 .terrain-circle {
     position: absolute;
-    top: -28px;
-    left: 72px;
-    height: 56px;
-    width: 56px;
+    top: calc(-1 * var(--circle-radius));
+    left: calc(var(--terrain-width) - var(--circle-radius));
+    height: var(--circle-diameter);
+    width: var(--circle-diameter);
     background-color: transparent;
-    clip-path: circle(28px);
+    clip-path: circle(var(--circle-radius));
     cursor: pointer;
     pointer-events: visiblePainted;
 }
 
 .city_container {
     position: absolute;
-    top: calc(-28px);
-    left: calc(-28px);
-    height: 56px;
-    width: 56px;
+    top: calc(-1 * var(--circle-radius));
+    left: calc(-1 * var(--circle-radius));
+    height: var(--circle-diameter);
+    width: var(--circle-diameter);
     pointer-events: none;
 }
 
@@ -147,8 +146,8 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    height: 56px;
-    width: 56px;
+    height: 100%;
+    width: 100%;
     background-image: url('img/tile-city-0.png');
     background-size: cover;
     pointer-events: inherit;
@@ -156,10 +155,10 @@
 
 .city-circle {
     position: absolute;
-    height: 56px;
-    width: 56px;
+    height: var(--circle-diameter);
+    width: var(--circle-diameter);
     background-color: transparent;
-    clip-path: circle(28px);
+    clip-path: circle(var(--circle-radius));
     cursor: pointer;
     pointer-events: visiblePainted;
 }

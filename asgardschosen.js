@@ -30,6 +30,16 @@ function (dojo, declare) {
             // Here, you can init the global variables of your user interface
             // Example:
             // this.myGlobalValue = 0;
+
+            this.TERRAIN_WIDTH = 200;
+            this.TERRAIN_HEIGHT = 200;
+
+            this.CIRCLE_RADIUS_RATIO = 0.28;
+            this.CIRCLE_RADIUS = this.TERRAIN_WIDTH * this.CIRCLE_RADIUS_RATIO;
+
+            this.LAND_TILE_WIDTH = this.TERRAIN_WIDTH * 2;
+            this.LAND_TILE_HEIGHT = this.TERRAIN_HEIGHT + this.CIRCLE_RADIUS;
+
             this.TERRAIN_TILE_CORNER_OFFSET = {
                 0: "-1,1",
                 90: "-1,1",
@@ -157,6 +167,9 @@ function (dojo, declare) {
                 const TILE_TYPE = tile["type"];
                 const TILE_ROTATION = tile["rotation"];
                 const TILE_ID = tile["id"];
+
+                console.log(`terrain: ${X}, ${Y}`)
+                console.log(`tile_id: ${TILE_ID}`)
 
                 if (TILE_TYPE === "land") {
                     this.placeLandTile(X, Y, TILE_ROTATION, TILE_ID);
@@ -289,14 +302,9 @@ function (dojo, declare) {
 
         placeLandTile: function (x, y, rotation_degrees, tile_id) {
             const [ X_OFFSET, Y_OFFSET ] = this.getCoordinatesFromString(this.TERRAIN_TILE_CORNER_OFFSET[rotation_degrees]);
-            console.log(`rotation deg: ${rotation_degrees}`);
-            console.log(`x offset: ${X_OFFSET}`);
-            console.log(`y offset: ${Y_OFFSET}`);
 
             const DISPLAY_X = x + X_OFFSET;
             const DISPLAY_Y = y + Y_OFFSET;
-            console.log(`display x: ${DISPLAY_X}`);
-            console.log(`display y: ${DISPLAY_Y}`);
 
             const TERRITORY_OFFSET = this.LAND_TILE_TERRITORY_OFFSETS[rotation_degrees];
             const LEFT_TERRITORY_ID = this.constructTerritoryName(x, y, TERRITORY_OFFSET['left']);
@@ -319,13 +327,12 @@ function (dojo, declare) {
 
             let tile = document.getElementById(tile_id);
             tile.style.transform = `rotate(${rotation_degrees}deg)`;
-            tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100}px`;
-            tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100}px`;
+            tile.style.left = `${Math.floor(DISPLAY_X / 2) * this.TERRAIN_WIDTH}px`;
+            tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -this.TERRAIN_WIDTH}px`;
         },
 
         placeCityTile: function (x, y, tile_id) {
             const TERRITORY_ID = `territory_${x}_${y}`;
-            console.log(`place territory id: ${TERRITORY_ID}`);
 
             const DISPLAY_X = x;
             const DISPLAY_Y = y;
@@ -338,8 +345,8 @@ function (dojo, declare) {
             `);
 
             let tile = document.getElementById(tile_id);
-            tile.style.left = `${Math.floor(DISPLAY_X / 2) * 100 - 28}px`;
-            tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -100 - 28}px`;
+            tile.style.left = `${Math.floor(DISPLAY_X / 2) * this.TERRAIN_WIDTH - this.CIRCLE_RADIUS}px`;
+            tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -this.TERRAIN_WIDTH - this.CIRCLE_RADIUS}px`;
         },
 
         constructTerritoryName: function (x, y, offset) {
@@ -359,8 +366,8 @@ function (dojo, declare) {
 
         getLandTileBackgroundPosition: function (tile_id) {
             const ID_NUMBER = parseInt(tile_id.split('_')[1]);
-            const X = -1 * (400 * (ID_NUMBER % 4));
-            const Y = -1 * (256 * Math.floor(ID_NUMBER / 4) + Math.floor(ID_NUMBER / 4));
+            const X = -1 * (this.LAND_TILE_WIDTH * (ID_NUMBER % 4));
+            const Y = -1 * (this.LAND_TILE_HEIGHT * Math.floor(ID_NUMBER / 4) + Math.floor(ID_NUMBER / 4));
 
             return [ X, Y ];
         },
