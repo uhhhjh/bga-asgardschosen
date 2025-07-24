@@ -42,7 +42,7 @@ function (dojo, declare) {
 
             this.TERRAIN_TILE_CORNER_OFFSET = {
                 0: "-1,1",
-                90: "-1,1",
+                90: "1,1",
                 180: "1,-1",
                 270: "-1,-1"
             };
@@ -160,7 +160,7 @@ function (dojo, declare) {
                     "type": "city",
                     "id": 13
                 },
-            }
+            };
 
             Object.entries(tile_map).forEach(([coordinates, tile]) => {
                 const [ X, Y ] = this.getCoordinatesFromString(coordinates);
