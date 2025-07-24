@@ -23,6 +23,7 @@ require_once(APP_GAMEMODULE_PATH . "module/table/table.game.php");
 class Game extends \Table
 {
     private static array $CARD_TYPES;
+    private array $GAME_BOARD;
 
     /**
      * Your global variables labels:
@@ -37,6 +38,8 @@ class Game extends \Table
     public function __construct()
     {
         parent::__construct();
+
+        require 'material.inc.php';
 
         $this->initGameStateLabels([
             "my_first_global_variable" => 10,
@@ -225,6 +228,8 @@ class Game extends \Table
         $result["players"] = $this->getCollectionFromDb(
             "SELECT `player_id` `id`, `player_score` `score` FROM `player`"
         );
+
+        $result['game_board'] = $this->MAP_INTRO_3P;
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
 

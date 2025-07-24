@@ -96,80 +96,16 @@ function (dojo, declare) {
             this.scrollmap.zoom = 0.8;
             this.scrollmap.createCompletely( $('map_container') );
 
-            const tile_map = {
-                "1,-1": {
-                    "type": "land",
-                    "rotation": 0,
-                    "id": "landtile_0"
-                },
-                "-1,-1": {
-                    "type": "land",
-                    "rotation": 180,
-                    "id": "landtile_10"
-                },
-                "1,1": {
-                    "type": "land",
-                    "rotation": 0,
-                    "id": "landtile_1"
-                },
-                "5,-1": {
-                    "type": "land",
-                    "rotation": 270,
-                    "id": "landtile_11"
-                },
-                "3,-5": {
-                    "type": "land",
-                    "rotation": 270,
-                    "id": "landtile_8"
-                },
-                "-1,-3": {
-                    "type": "land",
-                    "rotation": 0,
-                    "id": "landtile_9"
-                },
-                "-1,1": {
-                    "type": "land",
-                    "rotation": 180,
-                    "id": "landtile_3"
-                },
-                "0,0": {
-                    "type": "city",
-                    "id": 7
-                },
-                "-2,2": {
-                    "type": "city",
-                    "id": 8
-                },
-                "-4,0": {
-                    "type": "city",
-                    "id": 9
-                },
-                "4,2": {
-                    "type": "city",
-                    "id": 10
-                },
-                "2,-2": {
-                    "type": "city",
-                    "id": 11
-                },
-                "4,-2": {
-                    "type": "city",
-                    "id": 12
-                },
-                "0,-4": {
-                    "type": "city",
-                    "id": 13
-                },
-            };
+            const TILE_MAP = gamedatas.game_board;
 
-            Object.entries(tile_map).forEach(([coordinates, tile]) => {
+            Object.entries(TILE_MAP).forEach(([coordinates, tile]) => {
                 const [ X, Y ] = this.getCoordinatesFromString(coordinates);
                 const TILE_TYPE = tile["type"];
                 const TILE_ROTATION = tile["rotation"];
                 const TILE_ID = tile["id"];
 
-                console.log(`terrain: ${X}, ${Y}`)
-                console.log(`tile_id: ${TILE_ID}`)
+                // console.log(`terrain: ${X}, ${Y}`)
+                // console.log(`tile_id: ${TILE_ID}`)
 
                 if (TILE_TYPE === "land") {
                     this.placeLandTile(X, Y, TILE_ROTATION, TILE_ID);
