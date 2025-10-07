@@ -3,7 +3,7 @@
 $this->MAP_INTRO_2P = array (
     '1,-1' => array ('type' => 'land','rotation' => 0,'id' => 'landtile_0' ),
     '-1,-1' => array ('type' => 'land','rotation' => 180,'id' => 'landtile_10' ),
-    '1,-1' => array ('type' => 'land','rotation' => 0,'id' => 'landtile_1' ),
+    '1,1' => array ('type' => 'land','rotation' => 0,'id' => 'landtile_1' ),
     '5,-1' => array ('type' => 'land','rotation' => 270,'id' => 'landtile_11' ),
     '3,-5' => array ('type' => 'land','rotation' => 270,'id' => 'landtile_8' ),
     '-1,-3' => array ('type' => 'land','rotation' => 0,'id' => 'landtile_9' ),
