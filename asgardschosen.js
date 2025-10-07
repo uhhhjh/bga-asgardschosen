@@ -293,11 +293,9 @@ function (dojo, declare) {
         },
 
         constructTerritoryName: function (x, y, offset) {
-            const COORDINATE = this.getCoordinatesFromString(offset);
-            const X_OFFSET = COORDINATE[0];
-            const Y_OFFSET = COORDINATE[1];
+            const [ xOffset, yOffset ] = this.getCoordinatesFromString(offset);
 
-            return `territory_${x + X_OFFSET}_${y + Y_OFFSET}`;
+            return `territory_${x + xOffset}_${y + yOffset}`;
         },
 
         constructCityName: function (x) {
