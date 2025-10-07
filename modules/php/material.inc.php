@@ -35,5 +35,6 @@ $this->MAP_INTRO_3P = array (
     '6,-8' => array ('type' => 'city','rotation' => 0,'id' => 'citytile_4' ),
     '0,-10' => array ('type' => 'city','rotation' => 0,'id' => 'citytile_5' ),
     '2,-10' => array ('type' => 'city','rotation' => 0,'id' => 'citytile_6' ),
-    '4,-10' => array ('type' => 'city','rotation' => 0,'id' => 'citytile_7' )
+    '4,-10' => array ('type' => 'city','rotation' => 0,'id' => 'citytile_7' ),
+    '6,-2' => array ('type' => 'city','rotation' => 0,'id' => 'citytile_8' )
 );
