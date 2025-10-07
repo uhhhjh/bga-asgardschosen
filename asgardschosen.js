@@ -36,6 +36,7 @@ function (dojo, declare) {
 
             this.CIRCLE_RADIUS_RATIO = 0.28;
             this.CIRCLE_RADIUS = this.TERRAIN_WIDTH * this.CIRCLE_RADIUS_RATIO;
+            this.CIRCLE_WIDTH = 2 * this.CIRCLE_RADIUS;
 
             this.LAND_TILE_WIDTH = this.TERRAIN_WIDTH * 2;
             this.LAND_TILE_HEIGHT = this.TERRAIN_HEIGHT + this.CIRCLE_RADIUS;
@@ -111,7 +112,7 @@ function (dojo, declare) {
                     this.placeLandTile(X, Y, TILE_ROTATION, TILE_ID);
                 }
                 if (TILE_TYPE === "city") {
-                    this.placeCityTile(X, Y, TILE_ID);
+                    this.placeCityTile(X, Y, TILE_ROTATION, TILE_ID);
                 }
             });
 
@@ -267,7 +268,7 @@ function (dojo, declare) {
             tile.style.top = `${Math.floor(DISPLAY_Y / 2) * -this.TERRAIN_WIDTH}px`;
         },
 
-        placeCityTile: function (x, y, tile_id) {
+        placeCityTile: function (x, y, rotation_degrees, tile_id) {
             const TERRITORY_ID = `territory_${x}_${y}`;
 
             const DISPLAY_X = x;
@@ -275,10 +276,16 @@ function (dojo, declare) {
 
             document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
                 <div id="${tile_id}" class="tile-city-container">
-                    <div class="tile-city-background"></div>
+                    <div id="${tile_id}-image" class="tile-city-background"></div>
                     <div id="${TERRITORY_ID}" class="city-hitbox"></div>
                 </div>
             `);
+
+            let tile_image = document.getElementById(`${tile_id}-image`);
+            const [ backgroundposition_x, backgroundposition_y ] = this.getCityTileBackgroundPosition(tile_id);
+            tile_image.style.backgroundPositionX = `${backgroundposition_x}px`;
+            tile_image.style.backgroundPositionY = `${backgroundposition_y}px`;
+            tile_image.style.transform = `rotate(${rotation_degrees}deg)`;
 
             let tile = document.getElementById(tile_id);
             tile.style.left = `${Math.floor(DISPLAY_X / 2) * this.TERRAIN_WIDTH - this.CIRCLE_RADIUS}px`;
@@ -286,11 +293,9 @@ function (dojo, declare) {
         },
 
         constructTerritoryName: function (x, y, offset) {
-            const COORDINATE = this.getCoordinatesFromString(offset);
-            const X_OFFSET = COORDINATE[0];
-            const Y_OFFSET = COORDINATE[1];
+            const [ xOffset, yOffset ] = this.getCoordinatesFromString(offset);
 
-            return `territory_${x + X_OFFSET}_${y + Y_OFFSET}`;
+            return `territory_${x + xOffset}_${y + yOffset}`;
         },
 
         getCoordinatesFromString: function (coordinates_string) {
@@ -306,6 +311,14 @@ function (dojo, declare) {
             const Y = -1 * (this.LAND_TILE_HEIGHT * Math.floor(ID_NUMBER / 4) + Math.floor(ID_NUMBER / 4));
 
             return [ X, Y ];
+        },
+
+        getCityTileBackgroundPosition: function(tile_id) {
+            const id_number = parseInt(tile_id.split('_')[1]);
+            const x = -1 * this.CIRCLE_WIDTH * (id_number % 5);
+            const y = -1 * this.CIRCLE_WIDTH * Math.floor(id_number / 5);
+            
+            return [x, y];
         },
 
         ///////////////////////////////////////////////////

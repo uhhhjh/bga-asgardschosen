@@ -229,7 +229,7 @@ class Game extends \Table
             "SELECT `player_id` `id`, `player_score` `score` FROM `player`"
         );
 
-        $result['game_board'] = $this->MAP_INTRO_3P;
+        $result['game_board'] = $this->MAP_INTRO_2P;
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
 
