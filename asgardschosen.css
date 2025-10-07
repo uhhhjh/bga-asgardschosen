@@ -148,8 +148,8 @@
     left: 0px;
     height: 100%;
     width: 100%;
-    background-image: url('img/tile-city-0.png');
-    background-size: cover;
+    background-image: url('img/tile-city-sheet.png');
+    background-size: calc(5 * var(--circle-diameter)) calc(2 * var(--circle-diameter));
     pointer-events: inherit;
 }
 
