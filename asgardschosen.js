@@ -324,8 +324,8 @@ function (dojo, declare) {
 
         getCityTileBackgroundPosition: function(tile_id) {
             const id_number = parseInt(tile_id.split('_')[1]);
-            const x = this.CIRCLE_WIDTH * (id_number % 5);
-            const y = this.CIRCLE_WIDTH * Math.floor(id_number / 5);
+            const x = -1 * this.CIRCLE_WIDTH * (id_number % 5);
+            const y = -1 * this.CIRCLE_WIDTH * Math.floor(id_number / 5);
             
             return [x, y];
         },
