@@ -276,14 +276,13 @@ function (dojo, declare) {
 
             document.getElementsByClassName('scrollmap_scrollable')[0].insertAdjacentHTML('beforeend', `
                 <div id="${tile_id}" class="tile-city-container">
-                    <div id="city_${tile_id}-image" class="tile-city-background"></div>
+                    <div id="${tile_id}-image" class="tile-city-background"></div>
                     <div id="${TERRITORY_ID}" class="city-hitbox"></div>
                 </div>
             `);
 
-            let tile_image = document.getElementById(`city_${tile_id}-image`);
+            let tile_image = document.getElementById(`${tile_id}-image`);
             const [ backgroundposition_x, backgroundposition_y ] = this.getCityTileBackgroundPosition(tile_id);
-            console.log(`background pos: ${backgroundposition_x}px ${backgroundposition_y}px`);
             tile_image.style.backgroundPositionX = `${backgroundposition_x}px`;
             tile_image.style.backgroundPositionY = `${backgroundposition_y}px`;
 
@@ -294,6 +293,14 @@ function (dojo, declare) {
 
         constructTerritoryName: function (x, y, offset) {
             const COORDINATE = this.getCoordinatesFromString(offset);
+            const X_OFFSET = COORDINATE[0];
+            const Y_OFFSET = COORDINATE[1];
+
+            return `territory_${x + X_OFFSET}_${y + Y_OFFSET}`;
+        },
+
+        constructCityName: function (x) {
+            const COORDINATE = parseInt();
             const X_OFFSET = COORDINATE[0];
             const Y_OFFSET = COORDINATE[1];
 
@@ -316,7 +323,7 @@ function (dojo, declare) {
         },
 
         getCityTileBackgroundPosition: function(tile_id) {
-            const id_number = parseInt(tile_id);
+            const id_number = parseInt(tile_id.split('_')[1]);
             const x = this.CIRCLE_WIDTH * (id_number % 5);
             const y = this.CIRCLE_WIDTH * Math.floor(id_number / 5);
             
