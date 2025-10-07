@@ -298,14 +298,6 @@ function (dojo, declare) {
             return `territory_${x + xOffset}_${y + yOffset}`;
         },
 
-        constructCityName: function (x) {
-            const COORDINATE = parseInt();
-            const X_OFFSET = COORDINATE[0];
-            const Y_OFFSET = COORDINATE[1];
-
-            return `territory_${x + X_OFFSET}_${y + Y_OFFSET}`;
-        },
-
         getCoordinatesFromString: function (coordinates_string) {
             const X = parseInt(coordinates_string.split(',')[0]);
             const Y = parseInt(coordinates_string.split(',')[1]);
