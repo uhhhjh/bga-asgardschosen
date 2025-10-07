@@ -285,6 +285,7 @@ function (dojo, declare) {
             const [ backgroundposition_x, backgroundposition_y ] = this.getCityTileBackgroundPosition(tile_id);
             tile_image.style.backgroundPositionX = `${backgroundposition_x}px`;
             tile_image.style.backgroundPositionY = `${backgroundposition_y}px`;
+            tile_image.style.transform = `rotate(${rotation_degrees}deg)`;
 
             let tile = document.getElementById(tile_id);
             tile.style.left = `${Math.floor(DISPLAY_X / 2) * this.TERRAIN_WIDTH - this.CIRCLE_RADIUS}px`;
